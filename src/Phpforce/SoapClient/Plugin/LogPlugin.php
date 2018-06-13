@@ -25,7 +25,7 @@ class LogPlugin implements EventSubscriberInterface
 
     public function onClientRequest(RequestEvent $event)
     {
-        $this->logger->info(sprintf(
+        $this->logger->debug(sprintf(
             '[phpforce/soap-client] request: call "%s" with params %s',
             $event->getMethod(),
             \json_encode($event->getParams())
@@ -34,7 +34,7 @@ class LogPlugin implements EventSubscriberInterface
 
     public function onClientResponse(ResponseEvent $event)
     {
-        $this->logger->info(sprintf(
+        $this->logger->debug(sprintf(
             '[phpforce/soap-client] response: %s',
             \print_r($event->getResponse(), true)
         ));
