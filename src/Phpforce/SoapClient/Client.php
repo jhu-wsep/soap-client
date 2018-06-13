@@ -65,6 +65,13 @@ class Client extends AbstractHasDispatcher implements ClientInterface
     protected $loginResult;
 
     /**
+     * Holds any exceptions from the last call that uses CheckResult
+     *
+     * @var array
+     */
+    protected $lastExceptions;
+    
+    /**
      * Construct Salesforce SOAP client
      *
      * @param SoapClient $soapClient SOAP client
@@ -448,6 +455,11 @@ class Client extends AbstractHasDispatcher implements ClientInterface
         );
     }
 
+    public function getLastExceptions()
+    {
+        return $this->lastExceptions;
+    }
+    
     /**
      * Turn Sobjects into \SoapVars
      *
@@ -530,10 +542,12 @@ class Client extends AbstractHasDispatcher implements ClientInterface
             }
         }
 
-        if ($exceptions->count() > 0) {
-            throw $exceptions;
+        if ($exceptions->count() > 0){
+            $this->lastExceptions = $exceptions;
+        } else {
+            $this->lastExceptions = null;
         }
-
+        
         return $results;
     }
 
